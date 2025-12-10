@@ -24,7 +24,7 @@ author = 'Shipeng Feng'
 # The full version, including alpha/beta/rc tags
 import pkg_resources
 try:
-    release = pkg_resources.get_distribution('djangogrpcframework').version
+    release = pkg_resources.get_distribution('django-grpc-framework-plus').version
 except pkg_resources.DistributionNotFound:
     print('To build the documentation, the distribution information of')
     print('django-grpc-framework has to be available.  Run "setup.py develop"')

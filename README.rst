@@ -1,20 +1,20 @@
-Django gRPC Framework
-=====================
+Django gRPC Framework Plus
+==========================
 
-.. image:: https://img.shields.io/pypi/v/djangogrpcframework.svg
-   :target: https://img.shields.io/pypi/v/djangogrpcframework.svg
+.. image:: https://img.shields.io/pypi/v/django-grpc-framework-plus.svg
+   :target: https://img.shields.io/pypi/v/django-grpc-framework-plus.svg
 
-.. image:: https://readthedocs.org/projects/djangogrpcframework/badge/?version=latest
-   :target: https://readthedocs.org/projects/djangogrpcframework/badge/?version=latest
+.. image:: https://readthedocs.org/projects/django-grpc-framework-plus/badge/?version=latest
+   :target: https://readthedocs.org/projects/django-grpc-framework-plus/badge/?version=latest
 
 .. image:: https://travis-ci.org/fengsp/django-grpc-framework.svg?branch=master
    :target: https://travis-ci.org/fengsp/django-grpc-framework.svg?branch=master
 
-.. image:: https://img.shields.io/pypi/pyversions/djangogrpcframework
-   :target: https://img.shields.io/pypi/pyversions/djangogrpcframework
+.. image:: https://img.shields.io/pypi/pyversions/django-grpc-framework-plus
+   :target: https://img.shields.io/pypi/pyversions/django-grpc-framework-plus
 
-.. image:: https://img.shields.io/pypi/l/djangogrpcframework
-   :target: https://img.shields.io/pypi/l/djangogrpcframework
+.. image:: https://img.shields.io/pypi/l/django-grpc-framework-plus
+   :target: https://img.shields.io/pypi/l/django-grpc-framework-plus
 
 Django gRPC framework is a toolkit for building gRPC services, inspired by
 djangorestframework.
@@ -33,15 +33,15 @@ Installation
 
 .. code-block:: bash
     
-    $ pip install djangogrpcframework
+    $ pip install django-grpc-framework-plus
 
-Add ``django_grpc_framework`` to ``INSTALLED_APPS`` setting:
+Add ``django_grpc_framework_plus_plus`` to ``INSTALLED_APPS`` setting:
 
 .. code-block:: python
 
     INSTALLED_APPS = [
         ...
-        'django_grpc_framework',
+        'django_grpc_framework_plus',
     ]
 
 
@@ -75,7 +75,7 @@ Now edit the ``demo/urls.py`` module:
 .. code-block:: python
 
     from django.contrib.auth.models import User
-    from django_grpc_framework import generics, proto_serializers
+    from django_grpc_framework_plus import generics, proto_serializers
     import demo_pb2
     import demo_pb2_grpc
 

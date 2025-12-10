@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django_grpc_framework import generics, proto_serializers
+from django_grpc_framework_plus import generics, proto_serializers
 import demo_pb2
 import demo_pb2_grpc
 

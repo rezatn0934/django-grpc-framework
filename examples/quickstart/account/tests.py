@@ -1,4 +1,4 @@
-from django_grpc_framework.test import RPCTestCase
+from django_grpc_framework_plus.test import RPCTestCase
 from django.contrib.auth.models import User
 import account_pb2
 import account_pb2_grpc
