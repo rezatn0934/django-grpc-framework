@@ -4,7 +4,7 @@ from django.test import testcases
 import grpc
 from django.db import close_old_connections
 
-from django_grpc_framework import grpc_settings
+from django_grpc_framework_plus import grpc_settings
 from django_grpc_framework_plus.signals import grpc_request_started, grpc_request_finished
 
 

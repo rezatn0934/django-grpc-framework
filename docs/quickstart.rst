@@ -19,7 +19,7 @@ Create a new Django project named ``quickstart``, then start a new app called
     # Install Django and Django gRPC framework
     pip install django
     pip install djangorestframework
-    pip install djangogrpcframework
+    pip install django-grpc-framework-plus
     pip install grpcio
     pip install grpcio-tools
     # Create a new project and a new application
@@ -35,12 +35,12 @@ Now sync the database::
 Update settings
 ---------------
 
-Add ``django_grpc_framework`` to ``INSTALLED_APPS``, settings module is in
+Add ``django_grpc_framework_plus`` to ``INSTALLED_APPS``, settings module is in
 ``quickstart/settings.py``::
 
     INSTALLED_APPS = [
         ...
-        'django_grpc_framework',
+        'django_grpc_framework_plus',
     ]
 
 
@@ -96,7 +96,7 @@ Then we're going to define a serializer, let's create a new module named
 ``account/serializers.py``::
 
     from django.contrib.auth.models import User
-    from django_grpc_framework import proto_serializers
+    from django_grpc_framework_plus import proto_serializers
     import account_pb2
 
 
@@ -113,7 +113,7 @@ Writing services
 Now we'd write some a service, create ``account/services.py``::
 
     from django.contrib.auth.models import User
-    from django_grpc_framework import generics
+    from django_grpc_framework_plus import generics
     from account.serializers import UserProtoSerializer
 
 

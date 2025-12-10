@@ -30,7 +30,7 @@ one working environment::
 
 It is time to get the django grpc framework::
 
-    $ pip install djangogrpcframework
+    $ pip install django-grpc-framework-plus
     $ pip install django
     $ pip install djangorestframework
     $ pip install grpcio
@@ -42,7 +42,7 @@ System Wide
 
 Install it for all users on the system::
 
-    $ sudo pip install djangogrpcframework
+    $ sudo pip install django-grpc-framework-plus
 
 
 Development Version

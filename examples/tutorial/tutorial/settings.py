@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django_grpc_framework',
+    'django_grpc_framework_plus',
     'blog',
 ]
 

@@ -15,7 +15,7 @@ Declaring a serializer looks very similar to declaring a rest framework
 serializer::
 
     from rest_framework import serializers
-    from django_grpc_framework import proto_serializers
+    from django_grpc_framework_plus import proto_serializers
 
     class PersonProtoSerializer(proto_serializers.ProtoSerializer):
         name = serializers.CharField(max_length=100)
@@ -93,7 +93,7 @@ ModelProtoSerializer
 
 This is the same as a rest framework ``ModelSerializer``::
 
-    from django_grpc_framework import proto_serializers
+    from django_grpc_framework_plus import proto_serializers
     from hrm.models import Person
     import hrm_pb2
 
