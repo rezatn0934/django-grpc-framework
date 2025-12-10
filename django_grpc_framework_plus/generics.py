@@ -4,8 +4,8 @@ from django.core.exceptions import ValidationError
 from django.http import Http404
 import grpc
 
-from django_grpc_framework.utils import model_meta
-from django_grpc_framework import mixins, services
+from django_grpc_framework_plus.utils import model_meta
+from django_grpc_framework_plus import services, mixins
 
 
 class GenericService(services.Service):
@@ -68,8 +68,8 @@ class GenericService(services.Service):
         """
         queryset = self.filter_queryset(self.get_queryset())
         lookup_field = (
-            self.lookup_field
-            or model_meta.get_model_pk(queryset.model).name
+                self.lookup_field
+                or model_meta.get_model_pk(queryset.model).name
         )
         lookup_request_field = self.lookup_request_field or lookup_field
         assert hasattr(self.request, lookup_request_field), (

@@ -17,6 +17,42 @@ Django shell ``python manage.py shell``:
 
 .. code-block:: pycon
 
+    >>> from django_grpc_framework import Channel
+    >>> channel = Channel()
+    >>> stub = post_pb2_grpc.PostControllerStub(channel)
+    >>> response = stub.Retrieve(post_pb2.PostRetrieveRequest(id=post_id))
+    >>> response.title
+    'This is a title'
+    >>> from django_grpc_framework import Channel
+    >>> channel = Channel()
+    >>> stub = post_pb2_grpc.PostControllerStub(channel)
+    >>> response = stub.Retrieve(post_pb2.PostRetrieveRequest(id=post_id))
+    >>> response.title
+    'This is a title'
+    >>> from django_grpc_framework import Channel
+    >>> channel = Channel()
+    >>> stub = post_pb2_grpc.PostControllerStub(channel)
+    >>> response = stub.Retrieve(post_pb2.PostRetrieveRequest(id=post_id))
+    >>> response.title
+    'This is a title'
+    >>> from django_grpc_framework import Channel
+    >>> channel = Channel()
+    >>> stub = post_pb2_grpc.PostControllerStub(channel)
+    >>> response = stub.Retrieve(post_pb2.PostRetrieveRequest(id=post_id))
+    >>> response.title
+    'This is a title'
+    >>> from django_grpc_framework import Channel
+    >>> channel = Channel()
+    >>> stub = post_pb2_grpc.PostControllerStub(channel)
+    >>> response = stub.Retrieve(post_pb2.PostRetrieveRequest(id=post_id))
+    >>> response.title
+    'This is a title'
+    >>> from django_grpc_framework import Channel
+    >>> channel = Channel()
+    >>> stub = post_pb2_grpc.PostControllerStub(channel)
+    >>> response = stub.Retrieve(post_pb2.PostRetrieveRequest(id=post_id))
+    >>> response.title
+    'This is a title'
     >>> from django_grpc_framework.test import Channel
     >>> channel = Channel()
     >>> stub = post_pb2_grpc.PostControllerStub(channel)

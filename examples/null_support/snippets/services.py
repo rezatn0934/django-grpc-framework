@@ -1,5 +1,4 @@
-from django_grpc_framework import generics, mixins
-from django_grpc_framework import proto_serializers
+from django_grpc_framework_plus import generics, mixins, proto_serializers
 from snippets.models import Snippet
 import snippets_pb2
 from google.protobuf.struct_pb2 import NullValue

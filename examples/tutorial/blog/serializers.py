@@ -1,4 +1,4 @@
-from django_grpc_framework import proto_serializers
+from django_grpc_framework_plus import proto_serializers
 from blog.models import Post
 from blog_proto import post_pb2
 

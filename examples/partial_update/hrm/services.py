@@ -1,4 +1,4 @@
-from django_grpc_framework import generics, mixins
+from django_grpc_framework_plus import generics, mixins
 from hrm.serializers import PersonProtoSerializer
 from hrm.models import Person
 

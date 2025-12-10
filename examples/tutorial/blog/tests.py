@@ -1,5 +1,5 @@
 import grpc
-from django_grpc_framework.test import RPCTestCase
+from django_grpc_framework_plus.test import RPCTestCase
 from blog_proto import post_pb2, post_pb2_grpc
 from blog.models import Post
 

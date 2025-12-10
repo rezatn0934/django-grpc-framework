@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django_grpc_framework import generics
+from django_grpc_framework_plus import generics
 from account.serializers import UserProtoSerializer
 
 

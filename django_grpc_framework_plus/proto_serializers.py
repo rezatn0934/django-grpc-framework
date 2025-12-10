@@ -4,7 +4,7 @@ from rest_framework.serializers import (
 )
 from rest_framework.settings import api_settings
 from rest_framework.exceptions import ValidationError
-from django_grpc_framework.protobuf.json_format import (
+from django_grpc_framework_plus.protobuf.json_format import (
     message_to_dict, parse_dict
 )
 

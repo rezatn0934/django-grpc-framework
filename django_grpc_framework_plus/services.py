@@ -3,7 +3,7 @@ from functools import update_wrapper
 import grpc
 from django.db.models.query import QuerySet
 
-from django_grpc_framework.signals import grpc_request_started, grpc_request_finished
+from django_grpc_framework_plus.signals import grpc_request_started, grpc_request_finished
 
 
 class Service:
