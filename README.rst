@@ -2,22 +2,24 @@ Django gRPC Framework Plus
 ==========================
 
 .. image:: https://img.shields.io/pypi/v/django-grpc-framework-plus.svg
-   :target: https://img.shields.io/pypi/v/django-grpc-framework-plus.svg
+   :target: https://pypi.org/project/django-grpc-framework-plus/
 
 .. image:: https://readthedocs.org/projects/django-grpc-framework-plus/badge/?version=latest
-   :target: https://readthedocs.org/projects/django-grpc-framework-plus/badge/?version=latest
-
-.. image:: https://travis-ci.org/fengsp/django-grpc-framework.svg?branch=master
-   :target: https://travis-ci.org/fengsp/django-grpc-framework.svg?branch=master
+   :target: https://django-grpc-framework-plus.readthedocs.io/en/latest/
 
 .. image:: https://img.shields.io/pypi/pyversions/django-grpc-framework-plus
-   :target: https://img.shields.io/pypi/pyversions/django-grpc-framework-plus
+   :target: https://pypi.org/project/django-grpc-framework-plus/
 
 .. image:: https://img.shields.io/pypi/l/django-grpc-framework-plus
-   :target: https://img.shields.io/pypi/l/django-grpc-framework-plus
+   :target: https://pypi.org/project/django-grpc-framework-plus/
 
-Django gRPC framework is a toolkit for building gRPC services, inspired by
-djangorestframework.
+
+Overview
+--------
+
+**Django gRPC Framework Plus** is a **fork of [Django gRPC Framework](https://github.com/fengsp/django-grpc-framework)**
+with additional client-focused features such as advanced filtering, pagination, and improved authentication.
+It allows building gRPC services in Django while providing better support for client-server interactions.
 
 
 Requirements
@@ -32,7 +34,7 @@ Installation
 ------------
 
 .. code-block:: bash
-    
+
     $ pip install django-grpc-framework-plus
 
 Add ``django_grpc_framework_plus_plus`` to ``INSTALLED_APPS`` setting:
@@ -48,17 +50,14 @@ Add ``django_grpc_framework_plus_plus`` to ``INSTALLED_APPS`` setting:
 Demo
 ----
 
-Here is a quick example of using gRPC framework to build a simple
-model-backed service for accessing users, startup a new project:
+Create a new Django project:
 
 .. code-block:: bash
-    
+
     $ django-admin startproject demo
     $ python manage.py migrate
 
-Generate ``.proto`` file demo.proto_:
-
-.. _demo.proto: https://github.com/fengsp/django-grpc-framework/blob/master/examples/demo/demo.proto
+Generate a ``.proto`` file (`demo.proto`):
 
 .. code-block:: bash
 
@@ -70,7 +69,7 @@ Generate gRPC code:
 
     python -m grpc_tools.protoc --proto_path=./ --python_out=./ --grpc_python_out=./ ./demo.proto
 
-Now edit the ``demo/urls.py`` module:
+Edit ``demo/urls.py``:
 
 .. code-block:: python
 
@@ -79,30 +78,28 @@ Now edit the ``demo/urls.py`` module:
     import demo_pb2
     import demo_pb2_grpc
 
-
     class UserProtoSerializer(proto_serializers.ModelProtoSerializer):
         class Meta:
             model = User
             proto_class = demo_pb2.User
             fields = ['id', 'username', 'email']
 
-
     class UserService(generics.ModelService):
         queryset = User.objects.all()
         serializer_class = UserProtoSerializer
 
-
     urlpatterns = []
+
     def grpc_handlers(server):
         demo_pb2_grpc.add_UserControllerServicer_to_server(UserService.as_servicer(), server)
 
-That's it, we're done!
+Run the gRPC server:
 
 .. code-block:: bash
-    
+
     $ python manage.py grpcrunserver --dev
 
-You can now run a gRPC client to access the service:
+Run a gRPC client:
 
 .. code-block:: python
 
