@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.db.models.query import QuerySet
 from django.shortcuts import get_object_or_404
 from django.core.exceptions import ValidationError
@@ -8,7 +10,7 @@ from django_grpc_framework_plus.utils import model_meta
 from django_grpc_framework_plus import services, mixins
 
 
-class GenericService(services.Service):
+class BaseGenericService(services.Service):
     """
     Base class for all other generic services.
     """
@@ -113,8 +115,25 @@ class GenericService(services.Service):
         return queryset
 
 
-class CreateService(mixins.CreateModelMixin,
-                    GenericService):
+class FilterPaginationMixin:
+    """Provides DRF-like `filter_queryset` for gRPC."""
+
+    filter_backends: tuple[type[Any], ...] = ()
+
+    def filter_queryset(self, queryset: QuerySet) -> QuerySet:
+        for backend_cls in self.filter_backends:
+            queryset = backend_cls().filter_queryset(self.request, queryset, self)
+        return queryset
+
+
+class GenericService(
+    FilterPaginationMixin,
+    BaseGenericService,
+):
+    pass
+
+
+class CreateService(mixins.CreateModelMixin, GenericService):
     """
     Concrete service for creating a model instance that provides a ``Create()``
     handler.
