@@ -1,6 +1,5 @@
 from blog.handlers import grpc_handlers as blog_grpc_handlers
 
-
 urlpatterns = []
 
 

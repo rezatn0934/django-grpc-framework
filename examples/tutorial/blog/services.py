@@ -1,5 +1,6 @@
 from blog.models import Post
 from blog.serializers import PostProtoSerializer
+
 from django_grpc_framework_plus import generics
 
 """

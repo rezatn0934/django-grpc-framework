@@ -1,7 +1,7 @@
-from django_grpc_framework_plus import generics, mixins
-from hrm.serializers import PersonProtoSerializer
 from hrm.models import Person
+from hrm.serializers import PersonProtoSerializer
 
+from django_grpc_framework_plus import generics, mixins
 
 """
 class PersonService(generics.GenericService):
@@ -17,7 +17,6 @@ class PersonService(generics.GenericService):
 """
 
 
-class PersonService(mixins.PartialUpdateModelMixin,
-                    generics.GenericService):
+class PersonService(mixins.PartialUpdateModelMixin, generics.GenericService):
     queryset = Person.objects.all()
     serializer_class = PersonProtoSerializer
