@@ -1,8 +1,9 @@
 import grpc
-from google.protobuf import empty_pb2
-from django_grpc_framework.services import Service
 from blog.models import Post
 from blog.serializers import PostProtoSerializer
+from google.protobuf import empty_pb2
+
+from django_grpc_framework_plus.services import Service
 
 
 class PostService(Service):
@@ -22,7 +23,7 @@ class PostService(Service):
         try:
             return Post.objects.get(pk=pk)
         except Post.DoesNotExist:
-            self.context.abort(grpc.StatusCode.NOT_FOUND, 'Post:%s not found!' % pk)
+            self.context.abort(grpc.StatusCode.NOT_FOUND, "Post:%s not found!" % pk)
 
     def Retrieve(self, request, context):
         post = self.get_object(request.id)

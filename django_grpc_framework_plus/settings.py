@@ -10,24 +10,23 @@ This module provides the `grpc_setting` object, that is used to access
 gRPC framework settings, checking for user settings first, then falling
 back to the defaults.
 """
+
 from django.conf import settings
 from django.test.signals import setting_changed
 from django.utils.module_loading import import_string
 
-
 DEFAULTS = {
     # Root grpc handlers hook configuration
-    'ROOT_HANDLERS_HOOK': None,
-
+    "ROOT_HANDLERS_HOOK": None,
     # gRPC server configuration
-    'SERVER_INTERCEPTORS': None,
+    "SERVER_INTERCEPTORS": None,
 }
 
 
 # List of settings that may be in string import notation.
 IMPORT_STRINGS = [
-    'ROOT_HANDLERS_HOOK',
-    'SERVER_INTERCEPTORS',
+    "ROOT_HANDLERS_HOOK",
+    "SERVER_INTERCEPTORS",
 ]
 
 
@@ -38,9 +37,9 @@ def perform_import(val, setting_name):
     """
     if val is None:
         # We need the ROOT_URLCONF so we do this lazily
-        if setting_name == 'ROOT_HANDLERS_HOOK':
+        if setting_name == "ROOT_HANDLERS_HOOK":
             return import_from_string(
-                '%s.grpc_handlers' % settings.ROOT_URLCONF,
+                "%s.grpc_handlers" % settings.ROOT_URLCONF,
                 setting_name,
             )
         return None
@@ -59,8 +58,8 @@ def import_from_string(val, setting_name):
         return import_string(val)
     except ImportError as e:
         raise ImportError(
-            "Could not import '%s' for GRPC setting '%s'. %s: %s." %
-            (val, setting_name, e.__class__.__name__, e)
+            "Could not import '%s' for GRPC setting '%s'. %s: %s."
+            % (val, setting_name, e.__class__.__name__, e)
         )
 
 
@@ -69,12 +68,13 @@ class GRPCSettings:
     A settings object that allows gRPC Framework settings to be accessed as
     properties. For example:
 
-        from django_grpc_framework.settings import grpc_settings
+        from django_grpc_framework_plus.settings import grpc_settings
         print(grpc_settings.ROOT_HANDLERS_HOOK)
 
     Any setting with string import paths will be automatically resolved
     and return the class, rather than the string literal.
     """
+
     def __init__(self, user_settings=None, defaults=None, import_strings=None):
         if user_settings:
             self._user_settings = user_settings
@@ -84,8 +84,8 @@ class GRPCSettings:
 
     @property
     def user_settings(self):
-        if not hasattr(self, '_user_settings'):
-            self._user_settings = getattr(settings, 'GRPC_FRAMEWORK', {})
+        if not hasattr(self, "_user_settings"):
+            self._user_settings = getattr(settings, "GRPC_FRAMEWORK", {})
         return self._user_settings
 
     def __getattr__(self, attr):
@@ -112,16 +112,16 @@ class GRPCSettings:
         for attr in self._cached_attrs:
             delattr(self, attr)
         self._cached_attrs.clear()
-        if hasattr(self, '_user_settings'):
-            delattr(self, '_user_settings')
+        if hasattr(self, "_user_settings"):
+            delattr(self, "_user_settings")
 
 
 grpc_settings = GRPCSettings(None, DEFAULTS, IMPORT_STRINGS)
 
 
 def reload_grpc_settings(*args, **kwargs):
-    setting = kwargs['setting']
-    if setting == 'GRPC_FRAMEWORK' or setting == 'ROOT_URLCONF':
+    setting = kwargs["setting"]
+    if setting == "GRPC_FRAMEWORK" or setting == "ROOT_URLCONF":
         grpc_settings.reload()
 
 
