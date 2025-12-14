@@ -1,5 +1,5 @@
-from django.db.models import Q
 from django.core.exceptions import ValidationError
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 
@@ -78,7 +78,10 @@ class DynamicFilterBackend(BaseFilterBackend):
             # Split the filter key into field and lookup parts
             # Handle multiple underscores for related fields
             parts = key.split("__")
-            if parts[-1] in self.LOOKUP_EXPRESSIONS or parts[-1] in ["in", "range"]:
+            if parts[-1] in self.LOOKUP_EXPRESSIONS or parts[-1] in [
+                "in",
+                "range",
+            ]:
                 field = "__".join(parts[:-1])
                 lookup = parts[-1]
             else:
@@ -86,7 +89,10 @@ class DynamicFilterBackend(BaseFilterBackend):
                 lookup = "exact"
 
             # Validate lookup expression
-            if lookup not in self.LOOKUP_EXPRESSIONS and lookup not in ["in", "range"]:
+            if lookup not in self.LOOKUP_EXPRESSIONS and lookup not in [
+                "in",
+                "range",
+            ]:
                 continue
 
             # Handle special cases for value conversion
