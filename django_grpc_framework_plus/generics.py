@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Optional, Type
 
 import grpc
 from django.core.exceptions import ValidationError
@@ -7,6 +7,8 @@ from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 from django_grpc_framework_plus import mixins, services
+from django_grpc_framework_plus.backends.paginations import BasePaginationBackend
+from django_grpc_framework_plus.settings import grpc_settings
 from django_grpc_framework_plus.utils import model_meta
 
 
@@ -111,7 +113,7 @@ class BaseGenericService(services.Service):
         return queryset
 
 
-class FilterPaginationMixin:
+class FilterMixin:
     """Provides DRF-like `filter_queryset` for gRPC."""
 
     filter_backends: tuple[type[Any], ...] = ()
@@ -122,8 +124,37 @@ class FilterPaginationMixin:
         return queryset
 
 
+class PaginationMixin:
+    """
+    Provides DRF-like pagination for gRPC services.
+    Use by adding this mixin to your gRPC service class.
+    """
+
+    paginator_cls: Optional[Type[BasePaginationBackend]] = None
+
+    @property
+    def paginator(self) -> Optional[BasePaginationBackend]:
+        if self.paginator_cls:
+            return self.paginator_cls()
+        if grpc_settings.DEFAULT_PAGINATION_CLASS:
+            return grpc_settings.DEFAULT_PAGINATION_CLASS()
+        return None
+
+    def paginate_queryset(self, queryset: QuerySet) -> Optional[list]:
+        return (
+            self.paginator.paginate_queryset(queryset, self.request, self)
+            if self.paginator
+            else list(queryset)
+        )
+
+    def get_paginated_response(self, data: Any):
+        assert self.paginator, "Paginator not initialised"
+        return self.paginator.get_paginated_response(data)
+
+
 class GenericService(
-    FilterPaginationMixin,
+    FilterMixin,
+    PaginationMixin,
     BaseGenericService,
 ):
     pass
@@ -190,6 +221,7 @@ class ModelService(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
+    mixins.PaginatedListModelMixin,
     GenericService,
 ):
     """

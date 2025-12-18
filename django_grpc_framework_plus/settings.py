@@ -1,9 +1,14 @@
 """
 Settings for gRPC framework are all namespaced in the GRPC_FRAMEWORK setting.
-For example your project's `settings.py` file might look like this:
+
+Example usage in settings.py:
 
 GRPC_FRAMEWORK = {
-    'ROOT_HANDLERS_HOOK': 'path.to.my.custom_grpc_handlers',
+    "ROOT_HANDLERS_HOOK": "project.grpc_handlers",
+    "SERVER_INTERCEPTORS": [
+        "project.grpc.interceptors.AuthInterceptor",
+    ],
+    "DEFAULT_PAGINATION_CLASS": "project.grpc.pagination.DefaultPagination",
 }
 
 This module provides the `grpc_setting` object, that is used to access
@@ -20,6 +25,9 @@ DEFAULTS = {
     "ROOT_HANDLERS_HOOK": None,
     # gRPC server configuration
     "SERVER_INTERCEPTORS": None,
+    # Pagination
+    # Should be a class path or None
+    "DEFAULT_PAGINATION_CLASS": None,
 }
 
 
@@ -27,6 +35,7 @@ DEFAULTS = {
 IMPORT_STRINGS = [
     "ROOT_HANDLERS_HOOK",
     "SERVER_INTERCEPTORS",
+    "DEFAULT_PAGINATION_CLASS",
 ]
 
 
@@ -36,16 +45,18 @@ def perform_import(val, setting_name):
     then perform the necessary import or imports.
     """
     if val is None:
-        # We need the ROOT_URLCONF so we do this lazily
+        # ROOT_HANDLERS_HOOK defaults to <ROOT_URLCONF>.grpc_handlers
         if setting_name == "ROOT_HANDLERS_HOOK":
             return import_from_string(
-                "%s.grpc_handlers" % settings.ROOT_URLCONF,
+                f"{settings.ROOT_URLCONF}.grpc_handlers",
                 setting_name,
             )
         return None
-    elif isinstance(val, str):
+
+    if isinstance(val, str):
         return import_from_string(val, setting_name)
-    elif isinstance(val, (list, tuple)):
+
+    if isinstance(val, (list, tuple)):
         return [import_from_string(item, setting_name) for item in val]
     return val
 
@@ -56,11 +67,11 @@ def import_from_string(val, setting_name):
     """
     try:
         return import_string(val)
-    except ImportError as e:
+    except ImportError as exc:
         raise ImportError(
             "Could not import '%s' for GRPC setting '%s'. %s: %s."
-            % (val, setting_name, e.__class__.__name__, e)
-        )
+            % (val, setting_name, exc.__class__.__name__, exc)
+        ) from exc
 
 
 class GRPCSettings:
@@ -76,7 +87,7 @@ class GRPCSettings:
     """
 
     def __init__(self, user_settings=None, defaults=None, import_strings=None):
-        if user_settings:
+        if user_settings is not None:
             self._user_settings = user_settings
         self.defaults = defaults or DEFAULTS
         self.import_strings = import_strings or IMPORT_STRINGS
@@ -90,7 +101,7 @@ class GRPCSettings:
 
     def __getattr__(self, attr):
         if attr not in self.defaults:
-            raise AttributeError("Invalid gRPC setting: '%s'" % attr)
+            raise AttributeError(f"Invalid gRPC setting: '{attr}'")
 
         try:
             # Check if present in user settings
