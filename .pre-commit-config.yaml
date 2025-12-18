@@ -27,7 +27,7 @@ repos:
       - id: flake8
         language_version: python3.10
         args:
-          - --max-line-length=88
+          - --max-line-length=99
           - --exclude=
             */migrations/*,
             */pb2.py,

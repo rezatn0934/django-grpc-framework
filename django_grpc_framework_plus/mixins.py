@@ -1,5 +1,7 @@
 from google.protobuf import empty_pb2
 
+from django_grpc_framework_plus.protobuf.json_format import parse_dict
+
 
 class CreateModelMixin:
     def Create(self, request, context):
@@ -34,6 +36,86 @@ class ListModelMixin:
         serializer = self.get_serializer(queryset, many=True)
         for message in serializer.message:
             yield message
+
+
+class PaginatedListModelMixin:
+    """
+    Mixin to provide paginated list responses for ViewSets, returning data as Protobuf messages.
+
+    This mixin assumes the serializer's Meta class defines `list_proto_class` pointing
+    to the corresponding Protobuf message for list responses.
+
+    Methods
+    -------
+        PaginatedList(request, context)
+            Returns a paginated list of serialized objects converted to a Protobuf message.
+
+        _get_list_response_proto(serializer)
+            Retrieves the Protobuf message class for the list response from the serializer's Meta.
+    """
+
+    def PaginatedList(self, request, context):
+        """
+        Return a paginated list response for the given request.
+
+        Parameters
+        ----------
+            request : object
+                The incoming request object (e.g., gRPC context or HTTP request).
+            context : dict
+                Context dictionary to pass additional information to the serializer.
+
+        Returns
+        -------
+            ProtobufMessage
+                The paginated response converted into a Protobuf message.
+
+        Raises
+        ------
+            RuntimeError
+                If the serializer's Meta class does not define `list_proto_class`.
+        """
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+
+        serializer = self.get_serializer(page or queryset, many=True)
+
+        payload = (
+            self.get_paginated_response(serializer.data)
+            if page is not None
+            else serializer.data
+        )
+
+        response_proto = self._get_list_response_proto(serializer)
+        return parse_dict(payload, response_proto)
+
+    def _get_list_response_proto(self, serializer):
+        """
+        Retrieve the Protobuf message class for list responses from the serializer.
+
+        Parameters
+        ----------
+            serializer : Serializer
+            A serializer instance (or ListSerializer) used for the response.
+
+        Returns
+        -------
+            ProtobufMessage
+            An instance of the Protobuf message class for the list response.
+
+        Raises
+        ------
+            RuntimeError
+            If the serializer's Meta does not define `list_proto_class`.
+        """
+        child = serializer.child
+        try:
+            return child.Meta.list_proto_class()
+        except AttributeError:
+            raise RuntimeError(
+                "List serializer Meta must define `list_proto_class` "
+                "pointing to the List response proto message."
+            )
 
 
 class RetrieveModelMixin:
