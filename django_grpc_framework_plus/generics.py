@@ -221,6 +221,7 @@ class ModelService(
     mixins.UpdateModelMixin,
     mixins.DestroyModelMixin,
     mixins.ListModelMixin,
+    mixins.PaginatedListModelMixin,
     GenericService,
 ):
     """
